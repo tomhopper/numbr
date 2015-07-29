@@ -1,0 +1,9 @@
+Package: numbr
+Type: Package
+Title: Utility functions for working with numbers
+Version: 0.1
+Date: 2015-07-27
+Authors@R: c(person("Thomas","Hopper",email = "tomhopper@gmail.com", role = c("aut","cre")))
+Description: More about what it does (maybe more than one line)
+License: LGPL-2.1
+LazyData: TRUE
