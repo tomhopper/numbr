@@ -58,9 +58,10 @@ mantissa <- function(x) {
 }
 
 ## Convert numbers to words ####
-#' @title Convert a number to words
-#' @description Converts a number to a character string approximation. e.g. 312e9
-#'   returns as '300 billion.' Also returns a numeric representation of the approximation.
+#' @title Convert a number to large-number word representation
+#' @description Converts a number to a character string approximation using the "short scale"
+#'   version of large number names. e.g. 312e6 returns as '300 million.'
+#'   Simultaneously returns a numeric representation of the approximation.
 #' @param x A number to convert. length(x) must equal 1.
 #' @param lookup A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))
 #' @return A list containing the rounded number and its string representation
@@ -84,10 +85,12 @@ num_order_to_word <- function(x, lookup = NULL) {
     if(length(x) == 1L) {
       # set up our lookup table
       if(is.null(lookup)) {
-        # User has not supplied the lookup table
-        lookup <- data.frame(expon = c(21, 18, 15, 12, 9, 6, 3,
+        # User has not supplied the lookup table;
+        # provide the short scale version (used in American English)
+        lookup <- data.frame(expon = c(33, 30, 27, 24, 21, 18, 15, 12, 9, 6, 3,
                                        0, -3, -6, -9, -12),
-                             word = c("septillion", "sextillion", "quintillion",
+                             word = c("decillion", "nonillian", "octillian",
+                                      "septillion", "sextillion", "quintillion", "quadrillion",
                                       "trillion", "billion", "million", "thousand",
                                       "", "thousandth", "millionth", "billionth",
                                       "trillionth"),
