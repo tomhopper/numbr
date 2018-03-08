@@ -54,8 +54,8 @@ $name
 
 `mean_geom` calculates the geometric mean of a numeric or integer vector, returning a single value. The geometric mean,
 like the mean and the median, is an indication of the central tendancy of a set of numbers.
-The geometric mean is  the \emph{n}th root of the product of \emph{n} numbers. For instance,
-the geometric mean of 2 and 8 is \code{sqrt(2 * 8) = 4}.
+The geometric mean is  the *n*th root of the product of *n* numbers. For instance,
+the geometric mean of 2 and 8 is `sqrt(2 * 8) = 4`.
 
 The geometric mean is useful when computing the central tendency of measures that have different
 ranges. For instance, when computing a single "figure of merit" from differentrating scales that
