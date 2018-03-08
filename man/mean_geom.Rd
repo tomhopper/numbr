@@ -24,3 +24,9 @@ Calculates the geometric mean of a vector, returning a single value. The geometr
   ranges. For instance, when computing a single "figure of merit" from differentrating scales that
   have ranges 0 to 5 and 0 to 100.
 }
+\details{
+The geometric mean is only defined for positive numbers, and \code{mean_geom} first removes
+  any negative numbers. The definition of the mean is \deqn{\left(\prod_{i=1}^n x_i\right)^\frac{1}{n} = \sqrt[n]{x_1 x_2 \cdots x_n}}
+  For speed, \code{mean_geom} computes the log of each term, sums the logs, then computes the
+  exponent of the sum.
+}
