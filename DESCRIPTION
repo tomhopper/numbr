@@ -1,10 +1,13 @@
 Package: numbr
 Type: Package
 Title: Utility functions for working with numbers
-Version: 0.2
-Date: 2017-09-24
+Version: 0.5
+Date: 2018-03-08
 Authors@R: c(person("Thomas","Hopper",email = "tomhopper@gmail.com", role = c("aut","cre")))
-Description: More about what it does (maybe more than one line)
+Description: Basic mathematical operations, including checking if a vector contains IEEE-754 integers, 
+  calculating the geometric mean of a vector, determining the modal value of a vector, extracting the
+  mantissa and exponent of a number. Finally, provides a function for converting numbers into
+  their English word equivalent. E.g. 1.23e+9 as "100 billion."
 License: LGPL-2.1
 LazyData: TRUE
 RoxygenNote: 6.0.1

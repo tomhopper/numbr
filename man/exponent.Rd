@@ -20,3 +20,6 @@ Returns the exponent of a number as it is written in scientific
  x <- c(1,400,500000,.0003)
  exponent(x)
 }
+\references{
+Thanks to Stackoverflow answer by Paul McMurdie \url{https://stackoverflow.com/a/25555105}
+}

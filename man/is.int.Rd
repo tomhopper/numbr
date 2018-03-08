@@ -7,13 +7,15 @@
 \url{http://www.win-vector.com/blog/2015/06/r-in-a-64-bit-world/}
 }
 \usage{
-is.int(v)
+is.int(x, ...)
 }
 \arguments{
-\item{v}{the vector to check}
+\item{x}{the vector to check}
+
+\item{...}{provides backward compatibility with previous versions.}
 }
 \value{
-Returns TRUE if vector v is an IEEE-754-compliant integer, otherwise FALSE.
+Returns TRUE for each element of \code{x} that is an IEEE-754-compliant integer, and FALSE for all other elements.
 }
 \description{
 Determines if a vector fits the IEEE-754 definition of an integer that can be exactly represented with a double-precision number.
