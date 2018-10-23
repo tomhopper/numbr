@@ -17,9 +17,14 @@ Determines if each element of a numeric vector fits the IEEE-754 definition of a
 ```{r}
 x <- c(1, 412, 2.2)
 is.int(x)
+```
+```
 [1]  TRUE  TRUE FALSE
-
+```
+```{r}
 is.integer(x)
+```
+```
 [1] FALSE
 ```
 
@@ -44,7 +49,6 @@ num_order_to_word(x)
 1 3.2e+02        320
 2 3.0e+07 30 million
 3 9.0e+10 90 billion
-
 ```
 
 ### mode_stat()

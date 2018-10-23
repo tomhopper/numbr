@@ -56,12 +56,13 @@ mode_stat <- function(x, na.rm = FALSE) {
 ## Convert numbers to words ####
 #' @title Convert a vector of numbers to large-number word representation
 #' @export
-#' @description Converts a vector of numbers to a character string approximation using the "short scale"
-#'   version of large number names. e.g. 312e6 returns as '300 million.'
-#'   Simultaneously returns a numeric representation of the approximation.
+#' @description Converts a vector of numbers to a character string approximation
+#'   using the "short scale" version of large number names. e.g. 312e6 returns
+#'   as '300 million.' Simultaneously returns a numeric representation of the
+#'   approximation.
 #' @param x A vector of numbers to convert.
 #' @param lookup A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))
-#' @return A data frame containing the rounded number and its string representation
+#' @return A data frame containing the originally-supplied vector, the short scale version, and its string representation
 #' @examples
 #' # Simplest example
 #' num_order_to_word(1340)
@@ -141,5 +142,5 @@ num_order_to_word <- function(x, lookup = NULL) {
     stop(paste(deparse(substitute(x)), "is neither numeric nor integer. Please pass either a numeric or an integer variable to 'x'."))
   }
   # Return as a list object with both the number and its string representation
-  return(data.frame(number = x_n, name = x_name))
+  return(data.frame(number = x_n, name = x_name, stringsAsFactors = FALSE))
 }
