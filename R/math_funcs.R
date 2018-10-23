@@ -132,6 +132,7 @@ num_order_to_word <- function(x, lookup = NULL) {
       }
       # Create word equivalent of approximate number
       x_name <- paste0(as.character(x_n), ifelse(nchar(x_name > 0), " ", ""), x_name)
+      x_name <- trimws(x_name)
       x_n <- x_n * 10 ^ x_exp
     } else {
       stop(paste(deparse(substitute(x)), "has", ifelse(length(x) > 1L, "too many", "no"), "elements. Please pass a numeric variable with length(x) == 1 to 'x'."))

@@ -36,13 +36,14 @@ The `exponent` function extracts the base-10 exponent of a number, allowing furt
 The `num_order_to_word` function converts a number to its large number name representation using the so-called "short scale," in which the name changes with each increase by a power of 3. For example:
 
 ```{r}
-num_order_to_word(123456789)
-
-$number
-[1] 1e+08
-
-$name
-[1] "100 million"
+x <- c(323, 32423525, 86756456354)
+num_order_to_word(x)
+```
+```
+   number       name
+1 3.2e+02        320
+2 3.0e+07 30 million
+3 9.0e+10 90 billion
 
 ```
 
