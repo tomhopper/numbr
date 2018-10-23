@@ -113,7 +113,10 @@ num_order_to_word <- function(x, lookup = NULL) {
       x_exp <- exponent(x)
       x_exp <- ifelse(x_exp != 0, floor(x_exp / 3.0) *3, 0)
       # Look up the word for the number
-      x_name <- ifelse(x_exp != 0, lookup$word[lookup$expon == x_exp], "")
+      x_name <- rep(NA, times = length(x_exp))
+      for(i in 1:length(x_exp)) {
+        x_name[i] <- ifelse(x_exp[i] != 0, lookup$word[lookup$expon == x_exp[i]], "")
+      }
       # Convert x to a number with -3 < exponent() < 3
       # then combine the number and x_name.
       # e.g. 200,000,000,000 should return
