@@ -1,7 +1,7 @@
 Package: numbr
 Type: Package
 Title: Utility functions for working with numbers
-Version: 0.5.1
+Version: 0.6
 Date: 2018-03-08
 Authors@R: c(person("Thomas","Hopper",email = "tomhopper@gmail.com", role = c("aut","cre")))
 Description: Basic mathematical operations, including checking if a vector contains IEEE-754 integers, 
