@@ -54,14 +54,14 @@ mode_stat <- function(x, na.rm = FALSE) {
 
 
 ## Convert numbers to words ####
-#' @title Convert a number to large-number word representation
+#' @title Convert a vector of numbers to large-number word representation
 #' @export
-#' @description Converts a number to a character string approximation using the "short scale"
+#' @description Converts a vector of numbers to a character string approximation using the "short scale"
 #'   version of large number names. e.g. 312e6 returns as '300 million.'
 #'   Simultaneously returns a numeric representation of the approximation.
-#' @param x A number to convert. length(x) must equal 1.
+#' @param x A vector of numbers to convert.
 #' @param lookup A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))
-#' @return A list containing the rounded number and its string representation
+#' @return A data frame containing the rounded number and its string representation
 #' @examples
 #' # Simplest example
 #' num_order_to_word(1340)
@@ -79,7 +79,7 @@ num_order_to_word <- function(x, lookup = NULL) {
   # x must be a numeric or integer vector
   if(is.numeric(x) | is.integer(x)) {
     # this won't work with more than one element in x
-    if(length(x) == 1L) {
+    if(TRUE) {#length(x) == 1L) {
       # set up our lookup table
       if(is.null(lookup)) {
         # User has not supplied the lookup table;
@@ -111,31 +111,21 @@ num_order_to_word <- function(x, lookup = NULL) {
       # we can look up values in our lookup table and return the number
       # with the correct digits.
       x_exp <- exponent(x)
-      if(x_exp != 0) {
-        x_exp <- floor(x_exp / 3.0) * 3
-      } else {
-        x_exp <- 0
-        # if(x_exp <= -3) {
-        #   x_exp <- ceiling(x_exp / 3.0) * 3
-        # } else {
-        #   x_exp <- 0
-        # }
-      }
+      x_exp <- ifelse(x_exp != 0, floor(x_exp / 3.0) *3, 0)
       # Look up the word for the number
-      if(x_exp != 0) {
-        x_name <- lookup$word[lookup$expon == x_exp]
-      } else {
-        x_name <- ""
-      }
+      x_name <- ifelse(x_exp != 0, lookup$word[lookup$expon == x_exp], "")
       # Convert x to a number with -3 < exponent() < 3
       # then combine the number and x_name.
       # e.g. 200,000,000,000 should return
       # "200 billion"
-      if(abs(x_exp) >= 3) {
-        x_n <- x / 10^x_exp
-        x_n <- round(x_n / 10^exponent(x_n), 0) * 10^exponent(x_n)
-      } else {
-        x_n <- round(x / 10^(exponent(x)-1), 0) * 10^(exponent(x)-1)
+      x_n <- rep(NA, times = length(x_exp))
+      for(i in 1:length(x_exp)){
+        if(abs(x_exp[i]) >= 3) {
+          x_n[i] <- x[i] / 10^x_exp[i]
+          x_n[i] <- round(x_n[i] / 10^exponent(x_n[i]), 0) * 10^exponent(x_n[i])
+        } else {
+          x_n[i] <- round(x[i] / 10^(exponent(x[i])-1), 0) * 10^(exponent(x[i])-1)
+        }
       }
       # Create word equivalent of approximate number
       x_name <- paste0(as.character(x_n), ifelse(nchar(x_name > 0), " ", ""), x_name)
@@ -147,5 +137,5 @@ num_order_to_word <- function(x, lookup = NULL) {
     stop(paste(deparse(substitute(x)), "is neither numeric nor integer. Please pass either a numeric or an integer variable to 'x'."))
   }
   # Return as a list object with both the number and its string representation
-  return(list(number = x_n, name = x_name))
+  return(data.frame(number = x_n, name = x_name))
 }

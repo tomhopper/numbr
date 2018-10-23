@@ -10,4 +10,4 @@ Description: Basic mathematical operations, including checking if a vector conta
   their English word equivalent. E.g. 1.23e+9 as "100 billion."
 License: LGPL-2.1
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
