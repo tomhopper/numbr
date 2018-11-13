@@ -10,6 +10,7 @@
 #'  x <- c(1,400,500000,.0003)
 #'  exponent(x)
 exponent <- function(x) {
+  # check missing
   if(!missing(x)) {
     if(is.numeric(x)) {
       expon <- floor(log10(abs(x)))
