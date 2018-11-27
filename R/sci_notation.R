@@ -1,4 +1,5 @@
 ## Extract mantissa and exponent from vector ####
+#' @name exponent
 #' @title Exponent of a number in scientific notation
 #' @export
 #' @description Returns the exponent of a number as it is written in scientific
@@ -31,6 +32,7 @@ exponent <- function(x) {
   }
 }
 
+#' @name mantissa
 #' @title Mantissa of a number in scientific notation
 #' @export
 #' @description Returns the mantissa of a number as it is written in scientific

@@ -20,8 +20,10 @@ is.int <- function(x, ...) {
     }
   }
 
-  is.numeric(x) &
+  is_int <- is.numeric(x) &
     x > -2^53 & x < 2^53 &
     (floor(x)==ceiling(x))
+
+  return(is_int)
 }
 

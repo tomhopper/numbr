@@ -65,3 +65,29 @@ the geometric mean of 2 and 8 is `sqrt(2 * 8) = 4`.
 The geometric mean is useful when computing the central tendency of measures that have different
 ranges. For instance, when computing a single "figure of merit" from differentrating scales that
 have ranges 0 to 5 and 0 to 100.
+
+### model_fit_stats()
+
+`model_fit_stats` accepts a linear model and returns a data frame containing model fit statistics, including adjusted R<sup>2</sup>, predictive R<sup>2</sup>, PRESS, AIC, and BIC statistics.
+
+```{r}
+library(lme4)
+
+m1_lm <- lm(mpg ~ disp + hp + drat + wt + qsec, data = mtcars)
+m2_lm <- lm(mpg ~ disp + wt, data = mtcars)
+m3_lm <- lm(mpg ~ hp + drat + qsec, data = mtcars)
+m1_glm <- glm(mpg ~ disp + hp + wt, data = mtcars)
+m1_lmer <- lmer(mpg ~ disp + hp + drat + wt + qsec + (1 | cyl) + (1 | gear), data = mtcars2)
+
+model_fit_stats(m1_lm, m1_glm, m1_lmer, m2_lm, m3_lm)
+```
+```
+   model terms     r.sqr adj.r.sqr pre.r.sqr    PRESS      AIC      BIC
+1  m1_lm     5 0.8489147 0.8198599 0.7666213 262.7954 158.2784 168.5385
+2 m1_glm     3        NA        NA        NA 261.3609 158.6430 165.9717
+3  m2_lm     2 0.7809306 0.7658223 0.7253210 309.3015 164.1678 170.0307
+4  m3_lm     3 0.7442512 0.7168495 0.6634817 378.9355 171.1216 178.4503
+Warning message:
+In model_fit_stats(m1_lm, m1_glm, m1_lmer, m2_lm, m3_lm) :
+  Models m1_lmer are not of class 'lm' and will be excluded.
+```

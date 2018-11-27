@@ -4,12 +4,14 @@
 \alias{mode_stat}
 \title{Returns the mode of a vector.}
 \usage{
-mode_stat(x, na.rm = FALSE)
+mode_stat(x, na.rm = FALSE, method = "tabulate")
 }
 \arguments{
 \item{x}{a vector to determine the mode of}
 
 \item{na.rm}{a boolean indicating, if \code{TRUE}, removes \code{NA} values before calculating the mode}
+
+\item{method}{specifies the method used for determining the mode}
 }
 \value{
 a vector containing the modes of \code{x}
@@ -17,4 +19,7 @@ a vector containing the modes of \code{x}
 \description{
 Determines the most common value in a vector. Handles multiple modes by returning a vector
  containing all modes. Works with any data type.
+}
+\details{
+\code{method} must be one of either "tabulate" or "density." "Tabulate"
 }

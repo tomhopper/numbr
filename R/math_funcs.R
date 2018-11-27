@@ -1,3 +1,4 @@
+#' @name mean_geom
 #' @title Returns the geometric mean of a vector
 #' @export
 #' @param x A numeric or integer vector
@@ -25,21 +26,37 @@ mean_geom = function(x, na.rm=TRUE){
   }
 }
 
+#' @name mode_stat
 #' @title Returns the mode of a vector.
 #' @export
 #' @param x a vector to determine the mode of
 #' @param na.rm a boolean indicating, if \code{TRUE}, removes \code{NA} values before calculating the mode
+#' @param method specifies the method used for determining the mode
 #' @return a vector containing the modes of \code{x}
 #' @description Determines the most common value in a vector. Handles multiple modes by returning a vector
 #'  containing all modes. Works with any data type.
-mode_stat <- function(x, na.rm = FALSE) {
-  if(na.rm){
-    x <- x[!is.na(x)]
-  }
+#' @details \code{method} must be one of either "tabulate" or "density." "Tabulate"
+#' @importFrom stats density
+mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
+  if(missing(x)) stop("x must be supplied.")
+  if(!(method == "tabulate" | method == "density")) stop("method must be either tabulate or numeric")
+  if(class(x) == "numeric" & method == "density") {
+    temp <- density(x = x)
+    return(temp$x[which.max(temp$y)])
+  } else {
+    if(method == "tabulate"){
+      if(class(x) == "numeric") warning("Looks like you want to find the mode for a vector of real numbers.\nYou might want to set method = 'density'.")
+      if(na.rm){
+        x <- x[!is.na(x)]
+      }
 
-  ux <- unique(x)
-  tab <- tabulate(match(x, ux));
-  return(ux[tab == max(tab)])
+      ux <- unique(x)
+      tab <- tabulate(match(x, ux));
+      return(ux[tab == max(tab)])
+    } else {
+      stop("Either the method supplied is not recognized, or method = density was attempted with a non-numeric vector.")
+    }
+  }
 }
 
 # for uni-modal, this is about 2.5% faster
@@ -54,6 +71,7 @@ mode_stat <- function(x, na.rm = FALSE) {
 
 
 ## Convert numbers to words ####
+#' @name num_order_to_word
 #' @title Convert a vector of numbers to large-number word representation
 #' @export
 #' @description Converts a vector of numbers to a character string approximation

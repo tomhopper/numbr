@@ -2,22 +2,23 @@
 % Please edit documentation in R/math_funcs.R
 \name{num_order_to_word}
 \alias{num_order_to_word}
-\title{Convert a number to large-number word representation}
+\title{Convert a vector of numbers to large-number word representation}
 \usage{
 num_order_to_word(x, lookup = NULL)
 }
 \arguments{
-\item{x}{A number to convert. length(x) must equal 1.}
+\item{x}{A vector of numbers to convert.}
 
 \item{lookup}{A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))}
 }
 \value{
-A list containing the rounded number and its string representation
+A data frame containing the originally-supplied vector, the short scale version, and its string representation
 }
 \description{
-Converts a number to a character string approximation using the "short scale"
-  version of large number names. e.g. 312e6 returns as '300 million.'
-  Simultaneously returns a numeric representation of the approximation.
+Converts a vector of numbers to a character string approximation
+  using the "short scale" version of large number names. e.g. 312e6 returns
+  as '300 million.' Simultaneously returns a numeric representation of the
+  approximation.
 }
 \examples{
 # Simplest example
