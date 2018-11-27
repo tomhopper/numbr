@@ -4,7 +4,7 @@ Convenience functions for working with numbers.
 
 ## Installation
 
-`devtools::install_github("tomhopper/numbr")`
+`remotes::install_github("tomhopper/numbr")`
 
 ## Description
 
@@ -68,7 +68,7 @@ have ranges 0 to 5 and 0 to 100.
 
 ### model_fit_stats()
 
-`model_fit_stats` accepts a linear model and returns a data frame containing model fit statistics, including adjusted R<sup>2</sup>, predictive R<sup>2</sup>, PRESS, AIC, and BIC statistics.
+`model_fit_stats` accepts linear models and returns a data frame containing model fit statistics for each model, including adjusted R<sup>2</sup>, predictive R<sup>2</sup>, PRESS, AIC, and BIC statistics.
 
 ```{r}
 library(lme4)
