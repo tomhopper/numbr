@@ -103,3 +103,49 @@ model_fit_stats <- function(...) {
     stop("model_fit_stats needs objects of class 'lm.'")
   }
 }
+
+#' @name nCr
+#' @title Calculate the number of possible combinations of \eqn{n} objects, taken \eqn{r} at a time without repitition
+#' @description Calculates the number of arrangements in which no element occurs more than once and order does
+#'   not matter, without the requirement of using all the elements from a given set. For example, if we were
+#'   arranging an apple, a pear, and an orange (\eqn{n = 3}) into sets of two (\eqn{k = 2}), we would find
+#'   that there are three possible combinations: an apple and a pear, an apple and an orange, and a pear
+#'   and an orange. We would not count combinations where the order was reversed (e.g. a pear and an apple)
+#'   as different combinations.
+#' @details Implements the equation \deqn{ \frac{n!}{r!(n - r)!} }{n! / (r! * (n - r)!)}
+#' @param n An integer number of elements to choose from for the combination. May be a vector if \code{r} has a single element (i.e. \code{length(r) == 1}).
+#' @param r An integer subgroup size to combine. May be a vector if \code{n} has a single element (i.e. \code{length(n) == 1}).
+#' @return An integer number of possible permutations
+#' @export
+#' @examples
+#'   \dontrun{
+#'     nCr(3, 2)
+#'     nCr(3:5, 2)
+#'   }
+nCr <- function(n, r) {
+  if(!(all(is.int(n)) & all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
+  if(length(n) != 1 & length(r) != 1) {stop("Either n or r must contain only one element.")}
+  factorial(n) / (factorial(r) * factorial(n - r))
+}
+
+#' @name nPr
+#' @title Calculate the number of possible partial permutations of \eqn{n} objects, \eqn{r} at a time
+#' @description Calculates the number of ordered arrangements in which no element occurs more than once,
+#'   without the requirement of using all the elements from a given set. Also known as \emph{partial permutations}
+#'    or as \emph{sequences without repetition}.
+#' @details Implements the equation \deqn{\frac{n!}{(n - r)!}}{n! / (n - r)!}
+#' @param n An integer number of elements to permute. May be a vector if \code{r} has a single element (i.e. \code{length(r) == 1}).
+#' @param r An integer subgroup size. May be a vector if \code{n} has a single element (i.e. \code{length(n) == 1}).
+#' @return An integer number of possible permutations
+#' @export
+#' @examples
+#'   \dontrun{
+#'     nPr(3, 2)
+#'     nPr(3:5, 2)
+#'   }
+nPr <- function(n, r) {
+  if(!(all(is.int(n)) & all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
+  if(length(n) != 1 & length(r) != 1) {stop("Either 'n' or 'r' must contain only one element.")}
+  factorial(n) / (factorial(n - r))
+}
+

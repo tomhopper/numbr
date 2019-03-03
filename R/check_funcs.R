@@ -20,6 +20,11 @@ is.int <- function(x, ...) {
     }
   }
 
+  if(!(is.numeric(x) | is.integer(x))) {
+    x_type <- typeof(x)
+    stop(paste("'x' is of type", x_type, ", but must be type numeric or integer."))
+  }
+
   is_int <- is.numeric(x) &
     x > -2^53 & x < 2^53 &
     (floor(x)==ceiling(x))

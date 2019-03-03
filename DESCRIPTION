@@ -1,8 +1,8 @@
 Package: numbr
 Type: Package
 Title: Utility functions for working with numbers
-Version: 0.7.1
-Date: 2018-03-08
+Version: 0.8.0
+Date: 2019-03-01
 Authors@R: c(person("Thomas","Hopper",email = "tomhopper@gmail.com", role = c("aut","cre")))
 Description: Basic mathematical operations, including checking if a vector contains IEEE-754 integers, 
   calculating the geometric mean of a vector, determining the modal value of a vector, extracting the

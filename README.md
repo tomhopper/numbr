@@ -28,6 +28,8 @@ is.integer(x)
 [1] FALSE
 ```
 
+As of 0.8.0, now checks that `x` is of type numeric or integer, preventing an untrapped error when other (e.g. character) inputs are provided. 
+
 ### mantissa()
 
 The `mantissa` function extracts the base-10 mantissa of a number, allowing further manipulation such as conversion to human-readable format.
@@ -91,3 +93,19 @@ Warning message:
 In model_fit_stats(m1_lm, m1_glm, m1_lmer, m2_lm, m3_lm) :
   Models m1_lmer are not of class 'lm' and will be excluded.
 ```
+
+### nCr()
+
+Added as of 0.8.0.
+
+Compute the number of possible combinations of *n* items, *r* at a time.
+
+Calculates the number of arrangements in which no element occurs more than once and order does not matter, without the requirement of using all the elements from a given set. For example, if we were arranging an apple, a pear, and an orange (*n* = 3) into sets of two (*r* = 2), we would find that there are three possible combinations: an apple and a pear, an apple and an orange, and a pear and an orange. We would not count combinations where the order was reversed (e.g. a pear and an apple) as different combinations.
+
+### nPr()
+
+Added as of 0.8.0
+
+Calculate the number of possible partial permutations of *n* objects, *r* at a time.
+
+Calculates the number of ordered arrangements in which no element occurs more than once, without the requirement of using all the elements from a given set. Also known as *partial permutations* or as *sequences without repetition*.
