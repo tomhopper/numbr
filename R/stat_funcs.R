@@ -4,8 +4,11 @@
 #' @param linear.model An \code{lm} or \code{glm} object
 #' @return The PRESS statistic
 #' @importFrom stats residuals lm.influence
-
 PRESS <- function(linear.model) {
+  if("lm" %nin% class(linear.model)) {
+    stop("Supply a linear model to parameter 'linear.model'")
+    invisible(NaN)
+  }
   # calculate the predictive residuals
   pr <- residuals(linear.model)/(1-lm.influence(linear.model)$hat)
   # calculate the PRESS
@@ -21,8 +24,11 @@ PRESS <- function(linear.model) {
 #' @param linear.model An \code{lm} or \code{glm} object
 #' @return The predicted r squared value
 #' @importFrom stats anova
-
 pred_r_squared <- function(linear.model) {
+  if("lm" %nin% class(linear.model)) {
+    stop("Supply a linear model to parameter 'linear.model'")
+    invisible(NaN)
+  }
   # Use anova() to get the sum of squares for the linear model
   lm.anova <- anova(linear.model)
   # Calculate the total sum of squares
@@ -125,7 +131,7 @@ model_fit_stats <- function(...) {
 nCr <- function(n, r) {
   if(!(all(is.int(n)) & all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
   if(length(n) != 1 & length(r) != 1) {stop("Either n or r must contain only one element.")}
-  factorial(n) / (factorial(r) * factorial(n - r))
+  return(factorial(n) / (factorial(r) * factorial(n - r)))
 }
 
 #' @name nPr
@@ -146,6 +152,6 @@ nCr <- function(n, r) {
 nPr <- function(n, r) {
   if(!(all(is.int(n)) & all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
   if(length(n) != 1 & length(r) != 1) {stop("Either 'n' or 'r' must contain only one element.")}
-  factorial(n) / (factorial(n - r))
+  return(factorial(n) / (factorial(n - r)))
 }
 

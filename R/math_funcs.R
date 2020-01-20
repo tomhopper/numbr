@@ -38,11 +38,11 @@ mean_geom = function(x, na.rm=TRUE){
 #' @details \code{method} must be one of either "tabulate" or "density." "Tabulate"
 #' @importFrom stats density
 mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
-  if(missing(x)) stop("x must be supplied.")
-  if(!(method == "tabulate" | method == "density")) stop("method must be either tabulate or numeric")
+  if(missing(x)) stop("x must be supplied."); invisible(NaN)
+  if(!(method == "tabulate" | method == "density")) stop("method must be either tabulate or numeric"); invisible(NaN)
   if(class(x) == "numeric" & method == "density") {
     temp <- density(x = x)
-    return(temp$x[which.max(temp$y)])
+    return_val <- temp$x[which.max(temp$y)]
   } else {
     if(method == "tabulate"){
       if(class(x) == "numeric") warning("Looks like you want to find the mode for a vector of real numbers.\nYou might want to set method = 'density'.")
@@ -52,11 +52,13 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 
       ux <- unique(x)
       tab <- tabulate(match(x, ux));
-      return(ux[tab == max(tab)])
+      return_val <- ux[tab == max(tab)]
     } else {
       stop("Either the method supplied is not recognized, or method = density was attempted with a non-numeric vector.")
+      invisible(NaN)
     }
   }
+  return(return_val)
 }
 
 # for uni-modal, this is about 2.5% faster
@@ -74,6 +76,7 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #' @name num_order_to_word
 #' @title Convert a vector of numbers to large-number word representation
 #' @export
+#' @importFrom tibble tibble
 #' @description Converts a vector of numbers to a character string approximation
 #'   using the "short scale" version of large number names. e.g. 312e6 returns
 #'   as '300 million.' Simultaneously returns a numeric representation of the
@@ -160,5 +163,5 @@ num_order_to_word <- function(x, lookup = NULL) {
     stop(paste(deparse(substitute(x)), "is neither numeric nor integer. Please pass either a numeric or an integer variable to 'x'."))
   }
   # Return as a list object with both the number and its string representation
-  return(data.frame(number = x_n, name = x_name, stringsAsFactors = FALSE))
+  return(tibble(number = x_n, name = x_name))
 }
