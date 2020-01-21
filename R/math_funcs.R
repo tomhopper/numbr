@@ -76,13 +76,14 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #' @name num_order_to_word
 #' @title Convert a vector of numbers to large-number word representation
 #' @export
-#' @importFrom tibble tibble
+#' @import tibble
 #' @description Converts a vector of numbers to a character string approximation
 #'   using the "short scale" version of large number names. e.g. 312e6 returns
 #'   as '300 million.' Simultaneously returns a numeric representation of the
 #'   approximation.
 #' @param x A vector of numbers to convert.
-#' @param lookup A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))
+#' @param lookup Optional. A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))
+#' @param nsmall Optional. An integer number of digits to include to the right of the decimal.
 #' @return A data frame containing the originally-supplied vector, the short scale version, and its string representation
 #' @examples
 #' # Simplest example
@@ -97,7 +98,7 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #' x <- 1:4
 #' num_order_to_word(x)
 #' }
-num_order_to_word <- function(x, lookup = NULL) {
+num_order_to_word <- function(x, lookup = NULL, nsmall = 0) {
   # x must be a numeric or integer vector
   if(is.numeric(x) | is.integer(x)) {
     # this won't work with more than one element in x
@@ -106,14 +107,13 @@ num_order_to_word <- function(x, lookup = NULL) {
       if(is.null(lookup)) {
         # User has not supplied the lookup table;
         # provide the short scale version (used in American English)
-        lookup <- data.frame(expon = c(33, 30, 27, 24, 21, 18, 15, 12, 9, 6, 3,
+        lookup <- tibble(expon = c(33, 30, 27, 24, 21, 18, 15, 12, 9, 6, 3,
                                        0, -3, -6, -9, -12),
                              word = c("decillion", "nonillian", "octillian",
                                       "septillion", "sextillion", "quintillion", "quadrillion",
                                       "trillion", "billion", "million", "thousand",
                                       "", "thousandth", "millionth", "billionth",
-                                      "trillionth"),
-                             stringsAsFactors = FALSE)
+                                      "trillionth"))
       } else {
         # User has supplied the lookup table
         # Check that lookup has the right format:
@@ -133,7 +133,7 @@ num_order_to_word <- function(x, lookup = NULL) {
       # we can look up values in our lookup table and return the number
       # with the correct digits.
       x_exp <- exponent(x)
-      x_exp <- ifelse(x_exp != 0, floor(x_exp / 3.0) *3, 0)
+      x_exp <- ifelse(x_exp != 0, floor(x_exp / 3.0) * 3, 0)
       # Look up the word for the number
       x_name <- rep(NA, times = length(x_exp))
       for(i in 1:length(x_exp)) {
@@ -147,9 +147,9 @@ num_order_to_word <- function(x, lookup = NULL) {
       for(i in 1:length(x_exp)){
         if(abs(x_exp[i]) >= 3) {
           x_n[i] <- x[i] / 10^x_exp[i]
-          x_n[i] <- round(x_n[i] / 10^exponent(x_n[i]), 0) * 10^exponent(x_n[i])
+          x_n[i] <- round(x_n[i] / 10^exponent(x_n[i]), nsmall) * 10^exponent(x_n[i])
         } else {
-          x_n[i] <- round(x[i] / 10^(exponent(x[i])-1), 0) * 10^(exponent(x[i])-1)
+          x_n[i] <- round(x[i] / 10^(exponent(x[i])-1), nsmall) * 10^(exponent(x[i])-1)
         }
       }
       # Create word equivalent of approximate number

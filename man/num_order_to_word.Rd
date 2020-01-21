@@ -4,12 +4,14 @@
 \alias{num_order_to_word}
 \title{Convert a vector of numbers to large-number word representation}
 \usage{
-num_order_to_word(x, lookup = NULL)
+num_order_to_word(x, lookup = NULL, nsmall = 0)
 }
 \arguments{
 \item{x}{A vector of numbers to convert.}
 
-\item{lookup}{A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))}
+\item{lookup}{Optional. A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))}
+
+\item{nsmall}{Optional. An integer number of digits to include to the right of the decimal.}
 }
 \value{
 A data frame containing the originally-supplied vector, the short scale version, and its string representation

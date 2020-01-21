@@ -11,4 +11,4 @@ Description: Basic mathematical operations, including checking if a vector conta
 Encoding: UTF-8
 License: LGPL-2.1
 LazyData: TRUE
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
