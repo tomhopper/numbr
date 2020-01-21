@@ -83,7 +83,7 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #'   approximation.
 #' @param x A vector of numbers to convert.
 #' @param lookup Optional. A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))
-#' @param nsmall Optional. An integer number of digits to include to the right of the decimal.
+#' @param nsmall Optional. An integer number of digits to include to the right of the the leading digit
 #' @return A data frame containing the originally-supplied vector, the short scale version, and its string representation
 #' @examples
 #' # Simplest example
@@ -91,9 +91,9 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #' # Using a variable
 #' x <- exp(1)^20
 #' num_order_to_word(x)
+#' num_order_to_word(x, nsmall = 1)
 #' x <- exp(1)^-10
 #' num_order_to_word(x)
-#' # Fails with an error message
 #' \dontrun{
 #' x <- 1:4
 #' num_order_to_word(x)
