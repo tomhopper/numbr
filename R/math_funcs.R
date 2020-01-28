@@ -151,7 +151,7 @@ num_order_to_word <- function(x, lookup = NULL, nsmall = 0) {
         x_n[i] <- NA
       } else {
         if (is.infinite(x_exp[i])) {
-          x_n[i] <- if_else(x_exp[i] > 0, x[i], 0)
+          x_n[i] <- ifelse(x_exp[i] > 0, x[i], 0)
         } else {
           if(abs(x_exp[i]) >= 3) {
             x_n[i] <- x[i] / 10^x_exp[i]
@@ -169,6 +169,7 @@ num_order_to_word <- function(x, lookup = NULL, nsmall = 0) {
     # Create word equivalent of approximate number
     x_name <- paste0(as.character(x_n), ifelse(nchar(x_name > 0), " ", ""), x_name)
     x_name <- trimws(x_name)
+    x_name <- ifelse(x_name == "NA", NA, x_name)
     x_n <- x_n * 10 ^ x_exp
   } else {
     stop(paste(deparse(substitute(x)), "is neither numeric nor integer. Please pass either a numeric or an integer variable to 'x'."))

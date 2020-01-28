@@ -112,5 +112,8 @@ Calculates the number of ordered arrangements in which no element occurs more th
 
 ## Changes
 
+0.10.1
+ : NA now produces NA values in output for both `number` and `name`.
+ 
 0.10.0
- : Improves the handling of Inf, -Inf, and NA values, but may break code written for prior versions. Will now correctly return `Inf`, "Inf"; `-Inf`, "-Inf"; and `NA`, "NA".
+ : Improves the handling of Inf, -Inf, and NA values, but may break code written for prior versions. Will now return `Inf`, "Inf"; `-Inf`, "-Inf"; and `NA`, "NA".
