@@ -11,7 +11,7 @@ num_order_to_word(x, lookup = NULL, nsmall = 0)
 
 \item{lookup}{Optional. A data frame specifying numeric exponents as `expon` and corresponding names as `word`. e.g. lookup = data.frame(expon = c(3, 0, -3), word = c("thousands", "", "thousandths"))}
 
-\item{nsmall}{Optional. An integer number of digits to include to the right of the decimal.}
+\item{nsmall}{Optional. An integer number of digits to include to the right of the the leading digit}
 }
 \value{
 A data frame containing the originally-supplied vector, the short scale version, and its string representation
@@ -28,9 +28,9 @@ num_order_to_word(1340)
 # Using a variable
 x <- exp(1)^20
 num_order_to_word(x)
+num_order_to_word(x, nsmall = 1)
 x <- exp(1)^-10
 num_order_to_word(x)
-# Fails with an error message
 \dontrun{
 x <- 1:4
 num_order_to_word(x)

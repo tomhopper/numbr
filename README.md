@@ -109,3 +109,8 @@ Added as of 0.8.0
 Calculate the number of possible partial permutations of *n* objects, *r* at a time.
 
 Calculates the number of ordered arrangements in which no element occurs more than once, without the requirement of using all the elements from a given set. Also known as *partial permutations* or as *sequences without repetition*.
+
+## Changes
+
+0.10.0
+ : Improves the handling of Inf, -Inf, and NA values, but may break code written for prior versions. Will now correctly return `Inf`, "Inf"; `-Inf`, "-Inf"; and `NA`, "NA".
