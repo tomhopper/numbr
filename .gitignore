@@ -5,3 +5,5 @@ numbr.Rproj
 *.bak
 *.html
 test_code.R
+*.icloud
+man/

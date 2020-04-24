@@ -38,6 +38,14 @@ The `mantissa` function extracts the base-10 mantissa of a number, allowing furt
 
 The `exponent` function extracts the base-10 exponent of a number, allowing further manipulation such as conversion to human-readable format. 
 
+### %==%
+
+```
+x %==% y
+```
+
+Implements `all.equal()` ("(nearly) equal") for comparing two vectors on a row-by-row basis. Returns a logical vector of `TRUE` and `FALSE` values of the length of  indicating which rows are approximately equal and which are not. `%==%` has an advantage over `==` in that `%==%` will match numbers that are equal to within a defined tolerance (the defaults for `all.equal()`), whereas `==` will look for exact matches, without accounting for tolerance limits.
+
 ### num_order_to_word()
 
 The `num_order_to_word` function converts a number to its large number name representation using the so-called "short scale," in which the name changes with each increase by a power of 3. For example:
@@ -112,8 +120,11 @@ Calculates the number of ordered arrangements in which no element occurs more th
 
 ## Changes
 
+0.11.0
+ : added the `%==%` operator
+
 0.10.1
- : NA now produces NA values in output for both `number` and `name`.
+ : NA values on input now produce NA values in output for both `number` and `name`.
  
 0.10.0
  : Improves the handling of Inf, -Inf, and NA values, but may break code written for prior versions. Will now return `Inf`, "Inf"; `-Inf`, "-Inf"; and `NA`, "NA".

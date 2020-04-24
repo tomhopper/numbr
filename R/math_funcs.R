@@ -71,6 +71,34 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #   return(ux[which.max(tabulate(match(x, ux)))])
 # }
 
+#' @name %==%
+#' @title Test if Two Numeric Vectors are (Nearly) Equal Row-by-Row
+#' @export
+#' @param x A numeric vector
+#' @param y A numeric vector to compare to x
+#' @return A logical vector of TRUE and FALSE values indicating which rows
+#'   are (nearly) equal.
+#' @description Implements the base R function \link{all.equal} on a row-by-row basis.
+#'   Handy for making comparisons between data frame columns
+#'   within \link{dplyr::filter} and similar functions.
+"%==%" <- function(x, y) {
+  if(is.null(dim(x)) &
+     is.null(dim(y)) &
+     ("numeric" %in% class(x) |
+      "integer" %in% class(x)) &
+     ("numeric" %in% class(y) |
+      "integer" %in% class(y)) &
+     length(x) == length(y)) {
+    z = rep(NA, times = length(x))
+    for(i in 1:length(x)) {
+      z[i] = isTRUE(all.equal(x[i], y[i]))
+    }
+    return(z)
+  } else {
+    stop("x and y must be numeric or integer vectors of the same length")
+  }
+}
+
 
 ## Convert numbers to words ####
 #' @name num_order_to_word
