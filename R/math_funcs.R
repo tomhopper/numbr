@@ -74,23 +74,25 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #' @name %==%
 #' @title Test if Two Numeric Vectors are (Nearly) Equal Row-by-Row
 #' @export
-#' @param x A numeric vector
-#' @param y A numeric vector to compare to x
+#' @param x A numeric or integer vector. May be of length 1.
+#' @param y A numeric or integer vector to compare to x. May be of length 1.
 #' @return A logical vector of TRUE and FALSE values indicating which rows
 #'   are (nearly) equal.
 #' @description Implements the base R function \link{all.equal} on a row-by-row basis.
+#'   x and y can be of different lengths, including \code{length() == 1}.
 #'   Handy for making comparisons between data frame columns
-#'   within \link{dplyr::filter} and similar functions.
+#'   within \link[dplyr]{filter} and similar functions.
 "%==%" <- function(x, y) {
   if(is.null(dim(x)) &
      is.null(dim(y)) &
      ("numeric" %in% class(x) |
       "integer" %in% class(x)) &
      ("numeric" %in% class(y) |
-      "integer" %in% class(y)) &
-     length(x) == length(y)) {
+      "integer" %in% class(y))) {
+    if(length(x) > length(y)) {y = rep(y, length.out = length(x))}
+    else {if(length(y) > length(x)) x = rep(x, length.out = length(y))}
     z = rep(NA, times = length(x))
-    for(i in 1:length(x)) {
+    for(i in 1:max(length(x), length(y))) {
       z[i] = isTRUE(all.equal(x[i], y[i]))
     }
     return(z)

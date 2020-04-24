@@ -120,6 +120,9 @@ Calculates the number of ordered arrangements in which no element occurs more th
 
 ## Changes
 
+0.11.1
+ : `%==%` now works when x and y are different lengths, recycling the shorter argument.
+
 0.11.0
  : added the `%==%` operator
 
