@@ -81,6 +81,25 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #'   x and y can be of different lengths, including \code{length() == 1}.
 #'   Handy for making comparisons between data frame columns
 #'   within \link[dplyr]{filter} and similar functions.
+#' @examples
+#' \dontrun{
+#'  x <- 1L
+#'  y <- 1.001
+#'  x == y
+#'  # FALSE
+#'  x %==% y
+#'  # FALSE
+#'  y <- 1.00000001
+#'  x == y
+#'  # FALSE
+#'  x %==% y
+#'  # TRUE
+#'  x <- c(1, 2)
+#'  x == y
+#'  # FALSE FALSE
+#'  x %==% y
+#'  # TRUE FALSE
+#' }
 "%==%" <- function(x, y) {
   if(is.null(dim(x)) &
      is.null(dim(y)) &
