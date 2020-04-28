@@ -71,7 +71,6 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #   return(ux[which.max(tabulate(match(x, ux)))])
 # }
 
-#' @name `%==%`
 #' @title Test if Two Numeric Vectors are (Nearly) Equal Row-by-Row
 #' @export
 #' @param x A numeric or integer vector. May be of length 1.
