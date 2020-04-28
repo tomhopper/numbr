@@ -4,11 +4,15 @@ Title: Utility functions for working with numbers
 Version: 0.11.2
 Date: 2019-03-01
 Authors@R: c(person("Thomas","Hopper",email = "tomhopper@gmail.com", role = c("aut","cre")))
-Description: Basic mathematical operations, including checking if a vector contains IEEE-754 integers, 
-  calculating the geometric mean of a vector, determining the modal value of a vector, extracting the
-  mantissa and exponent of a number, and some statistical summaries of models. Finally, provides a function for converting numbers into
-  their English word equivalent. E.g. 1.23e+9 as "100 billion."
+Description: Basic mathematical operations, including checking if a 
+  vector contains IEEE-754 integers, calculating the geometric mean 
+  of a vector, determining the modal value of a vector, extracting 
+  the mantissa and exponent of a number, and some statistical 
+  summaries of models. Finally, provides a function for converting 
+  numbers into their English word equivalent. E.g. 1.23e+9 as 
+  "100 billion."
 Encoding: UTF-8
 License: LGPL-2.1
 LazyData: TRUE
+Depends: tibble
 RoxygenNote: 7.1.0
