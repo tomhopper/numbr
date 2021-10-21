@@ -44,7 +44,7 @@ The `exponent` function extracts the base-10 exponent of a number, allowing furt
 x %==% y
 ```
 
-Implements `all.equal()` ("(nearly) equal") for comparing two vectors on a row-by-row basis. Returns a logical vector of `TRUE` and `FALSE` values of the length of  indicating which rows are approximately equal and which are not. `%==%` has an advantage over `==` in that `%==%` will match numbers that are equal to within a defined tolerance (the defaults for `all.equal()`), whereas `==` will look for exact matches, without accounting for tolerance limits.
+Implements `all.equal()` ("(nearly) equal") for comparing two vectors on a row-by-row basis. Returns a logical vector of `TRUE` and `FALSE` values of the length of `x` indicating which rows are approximately equal and which are not. `%==%` has an advantage over `==` in that `%==%` will match numbers that are equal to within a defined tolerance (the defaults for `all.equal()`), whereas `==` will look for exact matches, without accounting for tolerance limits.
 
 ### num_order_to_word()
 
@@ -120,6 +120,9 @@ Calculates the number of ordered arrangements in which no element occurs more th
 
 ## Changes
 
+0.12.0
+ : `nCr()` and `nPr()` now return named vectors, with names identifying the n and r values. `nCr` and `nPr` also handle cases with *n < r* gracefully, returning NaN values in the vector.
+
 0.11.1
  : `%==%` now works when x and y are different lengths, recycling the shorter argument.
 
@@ -131,3 +134,6 @@ Calculates the number of ordered arrangements in which no element occurs more th
  
 0.10.0
  : Improves the handling of Inf, -Inf, and NA values, but may break code written for prior versions. Will now return `Inf`, "Inf"; `-Inf`, "-Inf"; and `NA`, "NA".
+ 
+0.8.0
+ : Added `nCr()` and `nPr()`
