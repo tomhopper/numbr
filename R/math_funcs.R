@@ -29,7 +29,7 @@ mean_geom = function(x, na.rm=TRUE){
 #' @name mode_stat
 #' @title Returns the mode of a vector.
 #' @export
-#' @param x a vector to determine the mode of
+#' @param x a vector
 #' @param na.rm a boolean indicating, if \code{TRUE}, removes \code{NA} values before calculating the mode
 #' @param method specifies the method used for determining the mode
 #' @return a vector containing the modes of \code{x}

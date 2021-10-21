@@ -127,11 +127,17 @@ model_fit_stats <- function(...) {
 #'   \dontrun{
 #'     nCr(3, 2)
 #'     nCr(3:5, 2)
+#'     nCr(5, 2:4)
+#'     nCr(1:5, 3)
 #'   }
 nCr <- function(n, r) {
   if(!(all(is.int(n)) & all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
-  if(length(n) != 1 & length(r) != 1) {stop("Either n or r must contain only one element.")}
-  return(factorial(n) / (factorial(r) * factorial(n - r)))
+  len_n <- length(n)
+  len_r <- length(r)
+  if(len_n != 1 & len_r != 1) {stop("Either n or r must contain only one element.")}
+  result <- factorial(n) / (factorial(r) * factorial(n - r))
+  names(result) <- paste0("n", n, "r", r)
+  return(result)
 }
 
 #' @name nPr
@@ -142,16 +148,22 @@ nCr <- function(n, r) {
 #' @details Implements the equation \deqn{\frac{n!}{(n - r)!}}{n! / (n - r)!}
 #' @param n An integer number of elements to permute. May be a vector if \code{r} has a single element (i.e. \code{length(r) == 1}).
 #' @param r An integer subgroup size. May be a vector if \code{n} has a single element (i.e. \code{length(n) == 1}).
-#' @return An integer number of possible permutations
+#' @return A named vector containing the integer number of possible permutations for each value of \code{n} supplied.
 #' @export
 #' @examples
 #'   \dontrun{
 #'     nPr(3, 2)
 #'     nPr(3:5, 2)
+#'     nPr(5, 2:4)
+#'     nPr(1:5, 3)
 #'   }
 nPr <- function(n, r) {
   if(!(all(is.int(n)) & all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
-  if(length(n) != 1 & length(r) != 1) {stop("Either 'n' or 'r' must contain only one element.")}
-  return(factorial(n) / (factorial(n - r)))
+  len_n <- length(n)
+  len_r <- length(r)
+  if(len_n != 1 & len_r != 1) {stop("Either n or r must contain only one element.")}
+  result <- factorial(n) / (factorial(n - r))
+  names(result) <- paste0("n", n, "r", r)
+  return(result)
 }
 
