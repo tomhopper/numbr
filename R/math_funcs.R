@@ -77,10 +77,11 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #' @param y A numeric or integer vector to compare to x. May be of length 1.
 #' @return A logical vector of TRUE and FALSE values indicating which rows
 #'   are (nearly) equal.
-#' @description Implements the base R function \link{all.equal} on a row-by-row basis.
+#' @description Implements \code{isTRUE(all.equal())} on a row-by-row basis.
 #'   x and y can be of different lengths, including \code{length() == 1}.
 #'   Handy for making comparisons between data frame columns
-#'   within \link[dplyr]{filter} and similar functions.
+#'   within \code{\link[dplyr]{filter}} and similar functions.
+#' @seealso \link{all.equal}
 #' @examples
 #' \dontrun{
 #'  x <- 1L
