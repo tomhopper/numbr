@@ -120,6 +120,9 @@ Calculates the number of ordered arrangements in which no element occurs more th
 
 ## Changes
 
+0.12.1
+ : Improved error handling and added unit testing.
+
 0.12.0
  : `nCr()` and `nPr()` now return named vectors, with names identifying the n and r values. `nCr` and `nPr` also handle cases with *n < r* gracefully, returning NaN values in the vector.
 

@@ -5,14 +5,19 @@
 #' @return The PRESS statistic
 #' @importFrom stats residuals lm.influence
 PRESS <- function(linear.model) {
-  if("lm" %nin% class(linear.model)) {
-    stop("Supply a linear model to parameter 'linear.model'")
-    invisible(NaN)
+  if (!missing(linear.model)) {
+    if ("lm" %nin% class(linear.model)) {
+      stop("Supply a linear model to parameter 'linear.model'")
+      invisible(NaN)
+    }
+    # calculate the predictive residuals
+    pr <- residuals(linear.model)/(1-lm.influence(linear.model)$hat)
+    # calculate the PRESS
+    PRESS <- sum(pr^2)
+  } else {
+    invisible(NULL)
+
   }
-  # calculate the predictive residuals
-  pr <- residuals(linear.model)/(1-lm.influence(linear.model)$hat)
-  # calculate the PRESS
-  PRESS <- sum(pr^2)
 
   return(PRESS)
 }
