@@ -16,6 +16,7 @@
 #'   exponent of the sum.
 #' @return The geometric mean of the vector \code{x}, or \code{NULL} with a warning
 #'   if the geometric mean cannot be calculated
+#' @importFrom stats na.omit
 # "mean_geom" chosen so that it shows up with "mean" in autocomplete.
 mean_geom = function(x, na.rm=TRUE){
   if (!missing(x)) {

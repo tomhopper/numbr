@@ -15,7 +15,7 @@ Encoding: UTF-8
 License: LGPL-2.1
 LazyData: TRUE
 Depends: tibble
-RoxygenNote: 7.1.0
+RoxygenNote: 7.2.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

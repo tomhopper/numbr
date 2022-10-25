@@ -1,13 +1,13 @@
 #' @name decimal_places
 #' @title Counts the number of digits to the right of the decimal
 #' @export
-#' @description
+#' @description Counts the number of digits to the right of the decimal place, ignoring any trailing zeroes.
 #' @param x A numeric vector
 #' @return An integer vector containing the number of digits to the right of the decimal for each
 #'   element of \code{x}
 #' @examples
 #' \dontrun{
-#'  decimal_places(c(0.11, 23.4, 185.8987))
+#'  decimal_places(c(0.11, 23.4, 185.8987, 0.1100))
 #' }
 decimal_places <- function(x) {
   ifelse(abs(x - round(x)) > .Machine$double.eps^0.5,
@@ -48,8 +48,10 @@ area_hex <- function(R = waiver(), r = waiver()) {
     # if R is missing, calculate it from r
     R <- 2 * r / sqrt(3)
   } else {
-    # r must be missing, so calculate it from R
-    r <- sqrt(3) * R / 2
+    if(is.waive(r)) {
+      # r must be missing, so calculate it from R
+      r <- sqrt(3) * R / 2
+    }
   }
   # r and R both exist and are numeric; check r and R describe a hexagon.
   # Warn if not and calculate area anyway

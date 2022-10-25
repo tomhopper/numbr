@@ -12,7 +12,7 @@ nPr(n, r)
 \item{r}{An integer subgroup size. May be a vector if \code{n} has a single element (i.e. \code{length(n) == 1}).}
 }
 \value{
-An integer number of possible permutations
+A named vector containing the integer number of possible permutations for each value of \code{n} supplied.
 }
 \description{
 Calculates the number of ordered arrangements in which no element occurs more than once,
@@ -26,5 +26,7 @@ Implements the equation \deqn{\frac{n!}{(n - r)!}}{n! / (n - r)!}
   \dontrun{
     nPr(3, 2)
     nPr(3:5, 2)
+    nPr(5, 2:4)
+    nPr(1:5, 3)
   }
 }

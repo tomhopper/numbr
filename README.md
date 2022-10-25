@@ -128,6 +128,9 @@ Calculates the number of ordered arrangements in which no element occurs more th
 
 ## Changes
 
+0.13.0
+ : Added `significant_digits()` and `area_hex()`. Cleaned up some error handling. Added a couple of unit tests.
+ 
 0.12.1
  : Improved error handling and added unit testing.
 

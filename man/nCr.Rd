@@ -29,5 +29,7 @@ Implements the equation \deqn{ \frac{n!}{r!(n - r)!} }{n! / (r! * (n - r)!)}
   \dontrun{
     nCr(3, 2)
     nCr(3:5, 2)
+    nCr(5, 2:4)
+    nCr(1:5, 3)
   }
 }
