@@ -1,3 +1,87 @@
+#' @name mean_geom
+#' @title Returns the geometric mean of a vector
+#' @export
+#' @param x A numeric or integer vector
+#' @param na.rm a boolean indicating, if \code{TRUE}, removes \code{NA} values before calculating the mean
+#' @description Calculates the geometric mean of a vector, returning a single value. The geometric mean,
+#'   like the mean and the median, is an indication of the central tendancy of a set of numbers.
+#'   The geometric mean is  the \emph{n}th root of the product of \emph{n} numbers. For instance,
+#'   the geometric mean of 2 and 8 is \code{sqrt(2 * 8) = 4}.
+#'   The geometric mean is useful when computing the central tendency of measures that have different
+#'   ranges. For instance, when computing a single "figure of merit" from differentrating scales that
+#'   have ranges 0 to 5 and 0 to 100.
+#' @details The geometric mean is only defined for positive numbers, and \code{mean_geom} first removes
+#'   any negative numbers.
+#'   For speed, \code{mean_geom} computes the log of each term, sums the logs, then computes the
+#'   exponent of the sum.
+#' @return The geometric mean of the vector \code{x}, or \code{NULL} with a warning
+#'   if the geometric mean cannot be calculated
+# "mean_geom" chosen so that it shows up with "mean" in autocomplete.
+mean_geom = function(x, na.rm=TRUE){
+  if (!missing(x)) {
+    if (class(x) %in% c("numeric", "integer")) {
+      if (na.rm) x <- na.omit(x)
+      return(exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x)))
+    } else {
+      invisible(NULL)
+      stop("'x' must be a numeric vector of class integer or numeric")
+    }
+  } else {
+    invisible(NULL)
+    stop("'x' is missing. Please supply a numeric vector for calculation of the geometric mean.")
+  }
+}
+
+#' @name mode_stat
+#' @title Returns the mode of a vector.
+#' @export
+#' @param x a vector
+#' @param na.rm a boolean indicating, if \code{TRUE}, removes \code{NA} values before calculating the mode
+#' @param method specifies the method used for determining the mode
+#' @return a vector containing the modes of \code{x}
+#' @description Determines the most common value in a vector. Handles multiple modes by returning a vector
+#'  containing all modes. Works with any data type.
+#' @details \code{method} must be one of either "tabulate" or "density." "Tabulate"
+#' @importFrom stats density
+mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
+  if(!missing(x)) {
+    if(!(method == "tabulate" || method == "density")) stop("method must be either \'tabulate\' or \'numeric.\'"); invisible(NaN)
+    if(class(x) == "numeric" & method == "density") {
+      temp <- density(x = x)
+      return_val <- temp$x[which.max(temp$y)]
+    } else {
+      if(method == "tabulate"){
+        if(class(x) == "numeric") warning("Looks like you want to find the mode for a vector of real numbers.\nYou might want to set method = 'density'.")
+        if(na.rm){
+          x <- x[!is.na(x)]
+        }
+        ux <- unique(x)
+        tab <- tabulate(match(x, ux));
+        return_val <- ux[which.max(tab)]
+        #return_val <- ux[tab == max(tab)]
+      } else {
+        invisible(NaN)
+        stop("Either the method supplied is not recognized, or method = density was attempted with a non-numeric vector.")
+      }
+    }
+  } else {
+    invisible(NaN)
+    stop("x must be supplied.")
+  }
+  return(return_val)
+}
+
+# for uni-modal, this is about 2.5% faster
+# mode_uni <- function(x, na.rm = FALSE) {
+#   if(na.rm){
+#     x = x[!is.na(x)]
+#   }
+#
+#   ux <- unique(x)
+#   return(ux[which.max(tabulate(match(x, ux)))])
+# }
+
+
 #' @title PRESS statistic
 #' @description Calculates the predicted residual sum of squares, or PRESS, statistic.
 #' 		Used primarily to compare alternative models.

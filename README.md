@@ -38,6 +38,10 @@ The `mantissa` function extracts the base-10 mantissa of a number, allowing furt
 
 The `exponent` function extracts the base-10 exponent of a number, allowing further manipulation such as conversion to human-readable format. 
 
+### decimal_places()
+
+`decimal_places` returns the number of digits to the right of the decimal place for each element of a numeric vector.
+
 ### %==%
 
 ```
@@ -75,6 +79,10 @@ the geometric mean of 2 and 8 is `sqrt(2 * 8) = 4`.
 The geometric mean is useful when computing the central tendency of measures that have different
 ranges. For instance, when computing a single "figure of merit" from differentrating scales that
 have ranges 0 to 5 and 0 to 100.
+
+### area_hex()
+
+`area_hex` returns the area of a hexagon given the apothem, or shorter radius, and/or the maximal radius (equal to the length of one of the sides).
 
 ### model_fit_stats()
 

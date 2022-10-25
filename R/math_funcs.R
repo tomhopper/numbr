@@ -1,154 +1,36 @@
-#' @name mean_geom
-#' @title Returns the geometric mean of a vector
+#' @name decimal_places
+#' @title Counts the number of digits to the right of the decimal
 #' @export
-#' @param x A numeric or integer vector
-#' @param na.rm a boolean indicating, if \code{TRUE}, removes \code{NA} values before calculating the mean
-#' @description Calculates the geometric mean of a vector, returning a single value. The geometric mean,
-#'   like the mean and the median, is an indication of the central tendancy of a set of numbers.
-#'   The geometric mean is  the \emph{n}th root of the product of \emph{n} numbers. For instance,
-#'   the geometric mean of 2 and 8 is \code{sqrt(2 * 8) = 4}.
-#'   The geometric mean is useful when computing the central tendency of measures that have different
-#'   ranges. For instance, when computing a single "figure of merit" from differentrating scales that
-#'   have ranges 0 to 5 and 0 to 100.
-#' @details The geometric mean is only defined for positive numbers, and \code{mean_geom} first removes
-#'   any negative numbers.
-#'   For speed, \code{mean_geom} computes the log of each term, sums the logs, then computes the
-#'   exponent of the sum.
-#' @return The geometric mean of the vector \code{x}, or \code{NULL} with a warning
-#'   if the geometric mean cannot be calculated
-# "mean_geom" chosen so that it shows up with "mean" in autocomplete.
-mean_geom = function(x, na.rm=TRUE){
-  if (!missing(x)) {
-    if (class(x) %in% c("numeric", "integer")) {
-      if (na.rm) x <- na.omit(x)
-      return(exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x)))
-    } else {
-      invisible(NULL)
-      stop("'x' must be a numeric vector of class integer or numeric")
-    }
-  } else {
-    invisible(NULL)
-    stop("'x' is missing. Please supply a numeric vector for calculation of the geometric mean.")
-  }
-}
-
-#' @name mode_stat
-#' @title Returns the mode of a vector.
-#' @export
-#' @param x a vector
-#' @param na.rm a boolean indicating, if \code{TRUE}, removes \code{NA} values before calculating the mode
-#' @param method specifies the method used for determining the mode
-#' @return a vector containing the modes of \code{x}
-#' @description Determines the most common value in a vector. Handles multiple modes by returning a vector
-#'  containing all modes. Works with any data type.
-#' @details \code{method} must be one of either "tabulate" or "density." "Tabulate"
-#' @importFrom stats density
-mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
-  if(!missing(x)) {
-    if(!(method == "tabulate" || method == "density")) stop("method must be either \'tabulate\' or \'numeric.\'"); invisible(NaN)
-    if(class(x) == "numeric" & method == "density") {
-      temp <- density(x = x)
-      return_val <- temp$x[which.max(temp$y)]
-    } else {
-      if(method == "tabulate"){
-        if(class(x) == "numeric") warning("Looks like you want to find the mode for a vector of real numbers.\nYou might want to set method = 'density'.")
-        if(na.rm){
-          x <- x[!is.na(x)]
-        }
-        ux <- unique(x)
-        tab <- tabulate(match(x, ux));
-        return_val <- ux[which.max(tab)]
-        #return_val <- ux[tab == max(tab)]
-      } else {
-        invisible(NaN)
-        stop("Either the method supplied is not recognized, or method = density was attempted with a non-numeric vector.")
-      }
-    }
-  } else {
-    invisible(NaN)
-    stop("x must be supplied.")
-  }
-  return(return_val)
-}
-
-# for uni-modal, this is about 2.5% faster
-# mode_uni <- function(x, na.rm = FALSE) {
-#   if(na.rm){
-#     x = x[!is.na(x)]
-#   }
-#
-#   ux <- unique(x)
-#   return(ux[which.max(tabulate(match(x, ux)))])
-# }
-
-#' @title Test if Two Numeric Vectors are (Nearly) Equal Row-by-Row
-#' @export
-#' @param x A numeric or integer vector. May be of length 1.
-#' @param y A numeric or integer vector to compare to x. May be of length 1.
-#' @return A logical vector of TRUE and FALSE values indicating which rows
-#'   are (nearly) equal.
-#' @description Implements \code{isTRUE(all.equal())} on a row-by-row basis.
-#'   x and y can be of different lengths, including \code{length() == 1}.
-#'   Handy for making comparisons between data frame columns
-#'   within \code{\link[dplyr]{filter}} and similar functions.
-#' @seealso \link{all.equal}
+#' @description
+#' @param x A numeric vector
+#' @return An integer vector containing the number of digits to the right of the decimal for each
+#'   element of \code{x}
 #' @examples
 #' \dontrun{
-#'  x <- 1L
-#'  y <- 1.001
-#'  x == y
-#'  # FALSE
-#'  x %==% y
-#'  # FALSE
-#'  y <- 1.00000001
-#'  x == y
-#'  # FALSE
-#'  x %==% y
-#'  # TRUE
-#'  x <- c(1, 2)
-#'  x == y
-#'  # FALSE FALSE
-#'  x %==% y
-#'  # TRUE FALSE
+#'  decimal_places(c(0.11, 23.4, 185.8987))
 #' }
-"%==%" <- function(x, y) {
-  if (!missing(x) && !missing(y)){
-    if (is.null(dim(x)) && is.null(dim(y)) &&
-        ("numeric" %in% class(x) || "integer" %in% class(x)) &&
-        ("numeric" %in% class(y) || "integer" %in% class(y))) {
-      if (length(x) > length(y)) {
-        y = rep(y, length.out = length(x))
-        warning("lhs is longer than rhs; rhs will be recycled to length(lhs).")
-      }
-      else {
-        if(length(y) > length(x)) {
-          x = rep(x, length.out = length(y))
-          warning("rhs is longer than lhs; lhs will be recycled to length(rhs).")
-        }
-      }
-      z = rep(NA, times = length(x))
-      for (i in 1:max(length(x), length(y))) {
-        z[i] <- isTRUE(all.equal(x[i], y[i]))
-      }
-    } else {
-      invisible(NULL)
-      stop("lhs and rhs must be numeric or integer vectors of the same length")
-    }
-  } else {
-    invisible(NULL)
-    stop("Values must be supplied on both the left-hand side and right-hand side. e.g. \'lhs %==% rhs\'.")
-  }
-  return(z)
+decimal_places <- function(x) {
+  ifelse(abs(x - round(x)) > .Machine$double.eps^0.5,
+         nchar(sub('^\\d+\\.', '', sub('0+$', '', as.character(x)))),
+         0)
 }
 
 ## Returns the area of a regular hexagon
 #' @name area_hex
 #' @title Calculates the area of a hexagon given either the longer radius \eqn{R} or the apothem \eqn{r}
 #' @export
-#' @description
+#' @description from \url{https://stackoverflow.com/a/59022366}
 #' @param r The apothem, or shorter radius of a hexagon, from center to side
 #' @param R The longer, or maximal, radius of a hexagon, from center to vertex Also the length of one of the sides.
 #' @return A numeric vector of areas, in the same units as \code{r} and/or \code{R}
+#' @examples
+#' \dontrun{
+#'  r <- 1.74 / 2
+#'  area_hex(r = r)
+#'  R <- 2 / 2
+#'  area_hex(R = R)
+#'  area_hex(R = R, r = r)
+#' }
 area_hex <- function(R = waiver(), r = waiver()) {
   if(is.waive(R) & is.waive(r))
     # no parameters supplied
@@ -171,9 +53,11 @@ area_hex <- function(R = waiver(), r = waiver()) {
   }
   # r and R both exist and are numeric; check r and R describe a hexagon.
   # Warn if not and calculate area anyway
-  if(isTRUE(all.equal(r, sqrt(3) * R / 2)))
-    warning("r and R don't look like they describe a hexagon.")
+  r_deci <- decimal_places(r)
+  if(!all(round(r, r_deci-1) %==% round(sqrt(3) * R / 2, r_deci-1)))
+    warning("Some (r, R) pairs don't look like they describe a hexagon.")
 
+  # Calculate the area
   area <- 3 * R * r
   # Other variants of area calculation
   # R equation
