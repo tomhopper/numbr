@@ -20,7 +20,7 @@
 # "mean_geom" chosen so that it shows up with "mean" in autocomplete.
 mean_geom = function(x, na.rm=TRUE){
   if (!missing(x)) {
-    if (class(x) %in% c("numeric", "integer")) {
+    if (inherits(x, "numeric") || inherits(x, "integer")) {
       if (na.rm) x <- na.omit(x)
       return(exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x)))
     } else {
@@ -47,12 +47,12 @@ mean_geom = function(x, na.rm=TRUE){
 mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
   if(!missing(x)) {
     if(!(method == "tabulate" || method == "density")) stop("method must be either \'tabulate\' or \'numeric.\'"); invisible(NaN)
-    if(class(x) == "numeric" & method == "density") {
+    if(inherits(x, "numeric") && method == "density") {
       temp <- density(x = x)
       return_val <- temp$x[which.max(temp$y)]
     } else {
       if(method == "tabulate"){
-        if(class(x) == "numeric") warning("Looks like you want to find the mode for a vector of real numbers.\nYou might want to set method = 'density'.")
+        if(inherits(x, "numeric")) warning("Looks like you want to find the mode for a vector of real numbers.\nYou might want to set method = 'density'.")
         if(na.rm){
           x <- x[!is.na(x)]
         }
@@ -91,7 +91,7 @@ mode_stat <- function(x, na.rm = FALSE, method = "tabulate") {
 #' @importFrom stats residuals lm.influence
 PRESS <- function(linear.model) {
   if (!missing(linear.model)) {
-    if ("lm" %nin% class(linear.model)) {
+    if (!inherits(linear.model, "lm")) {
       stop("Supply a linear model to parameter 'linear.model'")
       invisible(NaN)
     }
@@ -115,7 +115,7 @@ PRESS <- function(linear.model) {
 #' @return The predicted r squared value
 #' @importFrom stats anova
 pred_r_squared <- function(linear.model) {
-  if("lm" %nin% class(linear.model)) {
+  if(!inherits(linear.model, "lm")) {
     stop("Supply a linear model to parameter 'linear.model'")
     invisible(NaN)
   }
@@ -158,7 +158,7 @@ model_fit_stats <- function(...) {
   # drop the non-lm models from the input.
   nclass <- NULL
   for(i in 1:ndots) {
-    if(!("lm" %in% class(dots[[i]]))) {
+    if(!(inherits(dots[[i]], "lm"))) {
       nclass <- c(i, nclass)
     }
   }
@@ -185,9 +185,9 @@ model_fit_stats <- function(...) {
     for(i in 1:ndots) {
       return.df[[i, "terms"]] <- length(coef(dots[[i]])) - 1
       summary_dot <- summary(dots[[i]])
-      return.df[[i, "r.sqr"]] <- ifelse("glm" %in% class(dots[[i]]), NA, summary_dot[["r.squared"]])
-      return.df[[i, "adj.r.sqr"]] <- ifelse("glm" %in% class(dots[[i]]), NA, summary(dots[[i]])["adj.r.squared"])
-      return.df[[i, "pre.r.sqr"]] <- ifelse("glm" %in% class(dots[[i]]), NA, pred_r_squared(dots[[i]]))
+      return.df[[i, "r.sqr"]] <- ifelse(inherits(dots[[i]], "glm"), NA, summary_dot[["r.squared"]])
+      return.df[[i, "adj.r.sqr"]] <- ifelse(inherits(dots[[i]], "glm"), NA, summary(dots[[i]])["adj.r.squared"])
+      return.df[[i, "pre.r.sqr"]] <- ifelse(inherits(dots[[i]], "glm"), NA, pred_r_squared(dots[[i]]))
       return.df[[i, "PRESS"]] <- PRESS(dots[[i]])
       return.df[[i, "AIC"]] <- AIC(dots[[i]])
       return.df[[i, "BIC"]] <- BIC(dots[[i]])

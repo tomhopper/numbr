@@ -52,8 +52,8 @@ is.waive <- function(x) inherits(x, "waiver")
 "%==%" <- function(x, y) {
   if (!missing(x) && !missing(y)){
     if (is.null(dim(x)) && is.null(dim(y)) &&
-        ("numeric" %in% class(x) || "integer" %in% class(x)) &&
-        ("numeric" %in% class(y) || "integer" %in% class(y))) {
+        (inherits(x, "numeric") || inherits(x, "integer")) &&
+        (inherits(y, "numeric") || inherits(y, "integer"))) {
       if (length(x) > length(y)) {
         y = rep(y, length.out = length(x))
         warning("lhs is longer than rhs; rhs will be recycled to length(lhs).")

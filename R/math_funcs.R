@@ -118,19 +118,19 @@ num_order_to_word <- function(x, lookup = NULL, nsmall = 0) {
         # data frame
         # columns expon and word, and nothing else
         # column expon is numeric and word is character (if factor, then convert)
-        if("data.frame" %nin% class(lookup) ||
+        if(!inherits(lookup, "data.frame") ||
            any(c("expon", "word") %nin% colnames(lookup)) ||
            ncol(lookup) != 2) {
           invisible(NULL)
           stop("Lookup must be a data frame with columns 'expon' and 'word'.")
         }
-        if (!any(c("integer", "numeric") %in% class(lookup[["expon"]]))) {
+        if (!inherits(lookup[["expon"]], "integer") && !inherits(lookup[["expon"]], "numeric")) {
           invisible(NULL)
           stop("Lookup$expon must be either class numeric or integer.")
         }
-        if ("factor" %in% class(lookup[["word"]]))
+        if (inherits(lookup[["word"]], "factor"))
           lookup[["word"]] <- as.character(lookup[["word"]])
-        if ("character" %nin% class(lookup[["word"]])) {
+        if (!inherits(lookup[["word"]], "character")) {
           invisible(NULL)
           stop("Lookup$word must be class character.")
         }
