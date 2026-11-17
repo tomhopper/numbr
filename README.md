@@ -52,18 +52,37 @@ Implements `all.equal()` ("(nearly) equal") for comparing two vectors on a row-b
 
 ### num_order_to_word()
 
-The `num_order_to_word` function converts a number to its large number name representation using the so-called "short scale," in which the name changes with each increase by a power of 3. For example:
+The `num_order_to_word` function converts a number to its large number name representation. By default, uses the so-called "short scale," in which the name changes with each increase by a power of 3, with names provided from $1\times 10^{-12} =1$trillionth to $1\times 10^{33}=1$decillion. Other scales can be supplied by the user. additionally, the user can decide how many digits to retain.
+
+For example:
 
 ```{r}
 x <- c(323, 32423525, 86756456354)
 num_order_to_word(x)
 ```
 ```
-   number       name
-1 3.2e+02        320
-2 3.0e+07 30 million
-3 9.0e+10 90 billion
+# A tibble: 3 × 2
+       number name      
+        <dbl> <chr>     
+1         320 320       
+2    30000000 30 million
+3 90000000000 90 billion
 ```
+
+```{r}
+num_order_to_word(x, nsmall = 2)
+```
+```
+# A tibble: 3 × 2
+       number name        
+        <dbl> <chr>       
+1         323 323         
+2    32400000 32.4 million
+3 86800000000 86.8 billion
+```
+
+### frac_to_nat_ratio()
+
 
 ### mode_stat()
 
@@ -110,9 +129,11 @@ In model_fit_stats(m1_lm, m1_glm, m1_lmer, m2_lm, m3_lm) :
   Models m1_lmer are not of class 'lm' and will be excluded.
 ```
 
-### nCr()
+### wssplot()
 
-Added as of 0.8.0.
+Given a numeric matrix or data frame, plots the total within-cluster sum of squares (wss) for 1 to a user-definable number (`nc`) of clusters. Useful for finding the optimum number of clusters for a cluster analysis. Plotting is optional, and the function invisibly returns the wss for each number of clusters. Intended for use just when doing quick clustering with *stats* package's `kmeans()` and similar functions, as other packages built for cluster analysis have the same and better functions.
+
+### nCr()
 
 Compute the number of possible combinations of *n* items, *r* at a time.
 
@@ -120,13 +141,20 @@ Calculates the number of arrangements in which no element occurs more than once 
 
 ### nPr()
 
-Added as of 0.8.0
-
 Calculate the number of possible partial permutations of *n* objects, *r* at a time.
 
 Calculates the number of ordered arrangements in which no element occurs more than once, without the requirement of using all the elements from a given set. Also known as *partial permutations* or as *sequences without repetition*.
 
 ## Changes
+
+0.15.0
+ : Added trig functions `cot()`, `sec()`, `csc`, `perp_slope()`, `dependent_y()`, `dependend_x()`
+
+0.14.0
+ : Added `frac_to_nat_ratio()`
+ 
+0.13.2
+ : Added `wssplot()`
 
 0.13.1
  : Improved error handling, replacing class() checks with inherits() checks.

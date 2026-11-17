@@ -32,21 +32,12 @@ test_that("Check input of lookup table.", {
 rm(test_lookup, test_lookup2, test_lookup3)
 
 
-# Unit tests for area_hex ####
-
-testthat::test_that("Missing parameters", {
-  expect_error(area_hex())
+# Unit tests for frac_to_nat_ratio() ####
+test_that("Missing and incorrect input to x", {
+  expect_error(frac_to_nfreq())
+  expect_error(frac_to_nfreq(x = "a"))
+  expect_error(frac_to_nfreq(x = c(1, 2)))
+  expect_error(frac_to_nfreq(x = 1.2))
 })
-testthat::test_that("Suspicious parameters", {
-  testthat::expect_warning(area_hex(3, 6))
-})
-
-testthat::test_that("Invalid parameters", {
-  expect_error(area_hex(3, "a"))
-  expect_error(area_hex("a", 6))
-  expect_error(area_hex(3, TRUE))
-  expect_error(area_hex(TRUE, 6))
-})
-
 
 # Unit tests for decimal_places ####

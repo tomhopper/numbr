@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat_funcs.R
 \name{nCr}
 \alias{nCr}
-\title{Calculate the number of possible combinations of \eqn{n} objects, taken \eqn{r} at a time without repitition}
+\title{Calculate the number of possible combinations of \eqn{n} objects, taken \eqn{r} at a time without repetition}
 \usage{
 nCr(n, r)
 }

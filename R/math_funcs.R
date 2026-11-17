@@ -15,61 +15,6 @@ decimal_places <- function(x) {
          0)
 }
 
-## Returns the area of a regular hexagon
-#' @name area_hex
-#' @title Calculates the area of a hexagon given either the longer radius \eqn{R} or the apothem \eqn{r}
-#' @export
-#' @description from \url{https://stackoverflow.com/a/59022366}
-#' @param r The apothem, or shorter radius of a hexagon, from center to side
-#' @param R The longer, or maximal, radius of a hexagon, from center to vertex Also the length of one of the sides.
-#' @return A numeric vector of areas, in the same units as \code{r} and/or \code{R}
-#' @examples
-#' \dontrun{
-#'  r <- 1.74 / 2
-#'  area_hex(r = r)
-#'  R <- 2 / 2
-#'  area_hex(R = R)
-#'  area_hex(R = R, r = r)
-#' }
-area_hex <- function(R = waiver(), r = waiver()) {
-  if(is.waive(R) & is.waive(r))
-    # no parameters supplied
-    stop("At least one of the parameters R or r must be supplied.")
-  if(!is.waive(R))
-    if(!is.numeric(R))
-      # R supplied but not numeric
-      stop("R must be numeric.")
-  if(!is.waive(r))
-    if(!is.numeric(r))
-      # r supplied but not numeric
-      stop("r must be numeric.")
-  # At least R or r exists and is numeric
-  if(is.waive(R)) {
-    # if R is missing, calculate it from r
-    R <- 2 * r / sqrt(3)
-  } else {
-    if(is.waive(r)) {
-      # r must be missing, so calculate it from R
-      r <- sqrt(3) * R / 2
-    }
-  }
-  # r and R both exist and are numeric; check r and R describe a hexagon.
-  # Warn if not and calculate area anyway
-  r_deci <- decimal_places(r)
-  if(!all(round(r, r_deci-1) %==% round(sqrt(3) * R / 2, r_deci-1)))
-    warning("Some (r, R) pairs don't look like they describe a hexagon.")
-
-  # Calculate the area
-  area <- 3 * R * r
-  # Other variants of area calculation
-  # R equation
-  # area <- 3 * sqrt(3) * R^2 / 2
-  # r equation
-  # area <- 2 * sqrt(3) * r^2
-
-  return(area)
-}
-
 
 ## Convert numbers to words ####
 #' @name num_order_to_word
@@ -188,4 +133,90 @@ num_order_to_word <- function(x, lookup = NULL, nsmall = 0) {
   }
   # Return as a list object with both the number and its string representation
   return(tibble(number = x_n, name = x_name))
+}
+
+#' @title Converts a decimal fraction to a natural frequency that is
+#'   approximately the same.
+#' @description
+#'  Intended to create
+#'  Calculates a natural frequency from a given decimal fraction and a list of
+#'  denominators. e.g. if given \code{x = 0.71} and \code{denom = 10}, would return
+#'  a numerator of 7 and the denominator 10 in a vector \code{c(7, 10)}.
+#' @details
+#'  For every given denominator in \code{denom}, frac_to_nfreq calculates every
+#'  fraction \eqn{x * denom} and rounds to a whole number \code{num}.
+#'
+#'  It then calculates the true ratio \code{ratio = num / denom} and the absolute error,
+#'  \code{abs_error}, between  \code{x} and each value of \code{ratio}.
+#'
+#'  If \code{return = 'best'}, the function returns a named vector containing only the
+#'  numerator and denominator with the lowest absolute error. If there are ties in
+#'  \code{abs_error}, frac_to_nfreq will return the natural ratio with the smallest
+#'  denominator.
+#'
+#'  For example, if \code{x = 0.2} and \code{denom = 2:10}, then frac_to_nfreq will
+#'  return 1 and 5 but not 2 and 10.
+#'
+#'  When \code{return = 'table'}, the function returns a data frame with one row for
+#'  every given denominator, and columns for the denominators, the corresponding
+#'  numerator, the actual ratio, and the absolute error.
+#'
+#'  Having an unstable return type can clearly lead to errors, but is done here
+#'  because an earlier version of the function did not have the \code{return}
+#'  parameter, and functioned only as \code{return = 'best'}. The function was
+#'  rewritten to provide the full table of results in a way that does not break
+#'  legacy code.
+#' @param x numeric. The decimal fraction to convert. If \code{length(x)} > 1, the
+#'   function will return an error.
+#' @param denom numeric. A vector of integers to check for the denominator
+#'   of the natural ratio. Defaults to \code{2:10}.
+#' @param return character. If "best", \code{frac_to_nfreq} returns a vector with
+#'   only the best match of numerator and denominator If "table,"
+#'   returns a data frame with results for every given denominator. Defaults to "best."
+#' @param crit_error numeric. Defines the maximum absolute error for which to print a
+#'   warning when \code{return = 'best'}.
+#' @return if \code{return = 'best'}, returns a named numeric vector containing
+#'   the numerator and denominator of the closest natural fraction. If
+#'   \code{return = "table"}, returns a data frame containing a row for
+#'   each denominator given in \code{denom}, and the corresponding numerator,
+#'   the calculated ratio of \eqn{numerator / denominator}, and the absolute
+#'   error difference of the ratio from \code{x}.
+#' @TODO Make this works when x is a vector
+#' @TODO Make sure "natural ratio" is the right term of art
+#' @TODO Make it work with x >= 1
+#' @DONE Add a way to warn the user when abs_error > crit_error
+#' @DONE Add a hidden argument to let the user adjust crit_error
+frac_to_nfreq <- function(x, denom = 2:10, return = "best", crit_error = 0.1) {
+  if(missing(x)) stop("Argument x is missing. Please provide a fraction.")
+  if(!is.numeric(x) | !is.numeric(denom) | !is.numeric(crit_error))
+    stop("Arguments x, denom, and crit_error must be numeric.")
+  if(length(x) > 1) stop("Argument x must have a singular value (length(x) == 1).")
+  if(crit_error <=0 | crit_error >= 1) stop("crit_error must be between 0 and 1.")
+  if(x <= 0 | x >= 1) stop("Argument x must be between 0 and 1.")
+  # Create table of denominators and numerators
+  table_df <- data.frame(denom = as.integer(denom),
+                         num = as.integer(round(x*denom, digits = 0)))
+  # Calculate the actual ratio of numerator / denominator
+  table_df['ratio'] <- table_df['num'] / table_df['denom']
+  # Determine the absolute error between x and each value of ratio
+  table_df['abs_error'] <- abs(x - table_df['ratio'])
+
+  if(return == "table") {
+    return(table_df)
+  } else {
+    if(return == "best"){
+      # find the row with the smallest absolute error
+      result_df <- table_df[which(table_df['abs_error'] == min(table_df['abs_error'])),]
+      if(nrow(result_df) > 1) {
+        # Select the row with the smallest denom
+        result_df <- result_df[which(result_df['denom'] == min(result_df['denom'])),]
+      }
+      if(result_df['abs_error'] >= crit_error) warning(paste("Absolute error is greater than ", crit_error * 100, "%. Result may not be representative of x.", sep = ""))
+      # Return the nearest numerator and denominator as a named vector
+      return(c(numer = result_df[['num']], denom = result_df[['denom']]))
+    } else {
+      stop("Argument return must be either 'best' or 'table'.")
+      return(0)
+    }
+  }
 }

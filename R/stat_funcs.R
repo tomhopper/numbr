@@ -200,8 +200,47 @@ model_fit_stats <- function(...) {
   }
 }
 
+## Plot the within sum of squares for different number of centers
+## in \link{\code{kmeans}} to detect the natural number of clusters
+#' @name wssplot
+#' @title Plot the within-cluster sum of squares
+#' @export
+#' @description Calculates and plots the total within-cluster sum of squares (WSS) for 1 to \code{nc} centers.
+#'   Useful for identifying an approximately optimum number of clusters for subsequent cluster analysis.
+#'   Intended for use when using the \emph{stats} pacakage; library cluster and other packages offer good alternatives.
+#' @param data A matrix or data frame suitable for passing to \code{kmeans()}
+#' @param nc integer indicating the maximum number of clusters to calculate and plot
+#' @param seed integer value to seed the random number generator to provide reproducible results
+#' @param plot boolean indicating whether to display the plot (\code{TRUE}) or not (\code{FALSE})
+#' @return Invisibly returns a numeric vector of length \code{nc} containing the total within-cluster sum of squares for each cluster size 1 - \code{nc}
+#' @importFrom stats kmeans
+#' @importFrom stats var
+#' @seealso [stats::kmeans()] for details on \code{data} and the calculation of the within-cluster sum of squares
+wssplot <- function(data, nc=15, seed=NULL, plot=TRUE){
+  # set up wss for 1:nc
+  wss <- (nrow(data)-1)*sum(apply(data,2,var))
+  # calculate wss for each number of clusters 2:nc
+  for (i in 2:nc) {
+    set.seed(seed)
+    wss[i] <- kmeans(data, centers=i)$tot.withinss
+  }
+  # reset rng seed
+  set.seed(NULL)
+  # plot if plot=TRUE
+  if(plot) {
+    plot(1:nc, wss, type="b", xlab="Number of Clusters",
+         ylab="Within groups sum of squares")
+  }
+  # name wss vector
+  wss_names <- 1:nc
+  names(wss) <- wss_names
+  # return wss
+  invisible(wss)
+}
+
+
 #' @name nCr
-#' @title Calculate the number of possible combinations of \eqn{n} objects, taken \eqn{r} at a time without repitition
+#' @title Calculate the number of possible combinations of \eqn{n} objects, taken \eqn{r} at a time without repetition
 #' @description Calculates the number of arrangements in which no element occurs more than once and order does
 #'   not matter, without the requirement of using all the elements from a given set. For example, if we were
 #'   arranging an apple, a pear, and an orange (\eqn{n = 3}) into sets of two (\eqn{k = 2}), we would find
@@ -221,10 +260,11 @@ model_fit_stats <- function(...) {
 #'     nCr(1:5, 3)
 #'   }
 nCr <- function(n, r) {
-  if(!(all(is.int(n)) & all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
+  if(missing(n) || missing(r)) stop("n and r must both be supplied.")
+  if(!(all(is.int(n)) && all(is.int(r)))) {stop("'n' and 'r' must both be integer numbers.")}
   len_n <- length(n)
   len_r <- length(r)
-  if(len_n != 1 & len_r != 1) {stop("Either n or r must contain only one element.")}
+  if(len_n != 1 && len_r != 1) {stop("Either n or r must contain only one element.")}
   result <- factorial(n) / (factorial(r) * factorial(n - r))
   names(result) <- paste0("n", n, "r", r)
   return(result)
